@@ -20,7 +20,7 @@ class Category(Base):
 class Entry(Base):
     __tablename__ = "entries"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    time = Column(DateTime)
+    time = Column(DateTime, index=True)
     recipient = Column ("recipient", String)
     amount = Column("amount", Float)
     desc = Column("description", String)
