@@ -27,12 +27,33 @@ def add_entry(session: Session, recipient, amount, description, category_id, tim
     session.commit()
     return entry
 
+def get_all_entries_in_category(session: Session, category_name):
+    """_summary_
+
+    Args:
+        session (Session): _description_
+        category_name (_type_): _description_
+    """
+    category = session.query(Category).filter_by(name=category_name).first()
+    if category:
+        return category.entries
+    
+    raise UserWarning(f"The category '{category_name}' does not exist")
+
+def get_entry_category(session: Session, entry_id):
+    """Given an entry id, return the name of the category it belongs to
+
+    Args:
+        session (Session): _description_
+        entry_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    return session.query(Category.name).join(Entry).filter(Entry.id == entry_id).scalar()
+
 def show_entries(session):
     """Show all entries in the database"""
     entries = session.query(Entry).all()
     for entry in entries:
         print(f"Entry ID: {entry.id}, Amount: {entry.amount}, Recipient: {entry.recipient}, Category: {entry.category.name}")
-
-
-if __name__ == "__main__":
-    print("library functions")
