@@ -2,11 +2,11 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
 import uvicorn
-from library import create_session
+from libs.db_utils import create_session
 from typing import Union, List
 from pydantic import BaseModel
 from datetime import datetime
-from databases import Category
+from libs.databases import Category
 
 app = FastAPI()
 

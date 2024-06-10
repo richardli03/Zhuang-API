@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime
-from databases import Base, Category, Entry
+from libs.databases import Base, Category, Entry
 from os.path import isfile
 
 def create_session(database_name, make_new = False):

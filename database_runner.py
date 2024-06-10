@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime
-from databases import Base, Category, Entry
-from library import *
+from libs.databases import Base, Category, Entry
+from libs.db_utils import *
 
 def main():
     session = create_session("budget", True)
