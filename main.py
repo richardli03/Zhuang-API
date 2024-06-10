@@ -1,27 +1,48 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.responses import PlainTextResponse
+from sqlalchemy.orm import Session
+import uvicorn
+from library import create_session
+from typing import Union, List
+from pydantic import BaseModel
 from datetime import datetime
-from databases import Base, Category, Entry
-from library import *
+from databases import Category
 
-def main():
+app = FastAPI()
+
+class CategoryModel(BaseModel):
+    name: str
+
+class EntryModel(BaseModel):
+    time: datetime
+    recipient: str
+    amount: float
+    desc: str
+    category_id: int
+
+def get_db():
     session = create_session("budget")
-    travel = add_category(session, "Travel")
-    food = add_category(session, "Food")
-    rent = add_category(session, "Rent")
-    print("Category added:", rent)
+    try:
+        yield session
+    finally:
+        session.close()
 
-    entry_time = datetime.now()
-    entry = add_entry(session, "foo", 123.12, "bar", category_id=rent.id, time = entry_time)
-    entry = add_entry(session, "baz", 456.78, "qux", category_id=rent.id, time = entry_time)
-    entry = add_entry(session, "abc", 901.23, "def", category_id=rent.id, time = entry_time)
-    print("Entry added:", entry)
-    
-    show_entries(session)
+@app.get("/")
+def read_root():
+    return """Creating a budgetting application just to see if I can make a RESTful API"""
 
-    print(get_entry_category(session, 1))
-    print(get_all_entries_in_category(session, "bbbb"))
-    session.close()
+@app.post("/categories/", response_model=CategoryModel)
+def create_category(category: CategoryModel, db: Session = Depends(get_db)):
+    db_category = Category(category_name=category.name)
+    db.add(db_category)
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+@app.get("/categories/", response_model=List[CategoryModel])
+def read_categories(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    categories = db.query(Category).offset(skip).limit(limit).all()
+    return categories
 
 if __name__ == "__main__":
-    main()
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)

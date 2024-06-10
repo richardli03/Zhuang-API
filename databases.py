@@ -8,7 +8,7 @@ class Category(Base):
     __tablename__ = "categories"
 
     id = Column("id", Integer, primary_key=True, index = True, autoincrement= True)
-    name = Column("name", String, unique = True)
+    name = Column("name", String, unique = True, nullable = False)
     entries = relationship("Entry", back_populates="category")
 
     def __init__(self, category_name) -> None:
