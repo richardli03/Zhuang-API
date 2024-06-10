@@ -11,9 +11,11 @@ from libs.databases import Category, Entry
 app = FastAPI()
 
 class CategoryModel(BaseModel):
+    id: int
     name: str
 
 class EntryModel(BaseModel):
+    id: int
     time: datetime
     recipient: str
     amount: float
@@ -29,7 +31,7 @@ def get_db():
 
 @app.get("/")
 def read_root():
-    return """Creating a budgetting application just to see if I can make a RESTful API"""
+    return "Creating a budgetting application just to see if I can make a RESTful API"
 
 @app.post("/categories/", response_model=CategoryModel)
 def create_category(category: CategoryModel, db: Session = Depends(get_db)):
@@ -100,7 +102,8 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
     if db_entry:
         db.delete(db_entry)
         db.commit()
-        return db_entry
+
+    return {"db_entry": db_entry, "status": "deleted"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
