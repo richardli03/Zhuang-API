@@ -6,7 +6,7 @@ from libs.db_utils import create_session
 from typing import Union, List
 from pydantic import BaseModel
 from datetime import datetime
-from libs.databases import Category
+from libs.databases import Category, Entry
 
 app = FastAPI()
 
@@ -43,6 +43,19 @@ def create_category(category: CategoryModel, db: Session = Depends(get_db)):
 def read_categories(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     categories = db.query(Category).offset(skip).limit(limit).all()
     return categories
+
+@app.post("/entries/", response_model=EntryModel)
+def create_entry(entry: EntryModel, db: Session = Depends(get_db)):
+    db_entry = Entry(time = entry.time, recipient=entry.recipient, amount=entry.amount, description=entry.desc, category_id=entry.category_id)
+    db.add(db_entry)
+    db.commit()
+    db.refresh(db_entry)
+    return db_entry
+
+@app.get("/entries/", response_model=List[EntryModel])
+def read_entries(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    entries = db.query(Entry).offset(skip).limit(limit).all()
+    return entries
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
