@@ -2,12 +2,20 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime
 from databases import Base, Category, Entry
+from os.path import isfile
 
-def create_session(database_name):
+def create_session(database_name, make_new = False):
     """Create a new database session and return it."""
-    engine = create_engine(f"sqlite:///{database_name}.db")
-    # have a completely new database every run
-    Base.metadata.drop_all(bind=engine)
+    database_path = f"sqlite:///{database_name}.db"
+    if isfile(database_path):
+        pass
+    else:
+        engine = create_engine(database_path)
+
+    if make_new:
+        # have a completely new database every run
+        Base.metadata.drop_all(bind=engine)
+
     Base.metadata.create_all(bind = engine)
     Session = sessionmaker(bind = engine)
     session = Session()
