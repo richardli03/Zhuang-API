@@ -7,37 +7,37 @@ from pathlib import Path
 # Add the parent directory to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from libs.databases import Base, Category, Entry
+from libs.databases import Base, Category, Exercise, Entry
 from libs.db_utils import *
 
+
 def main():
-    session = create_session("budget", True)
+    session = create_session("richard_workouts", True)
 
-    travel = add_category(session, "Travel")
-    food = add_category(session, "Food")
-    rent = add_category(session, "Rent")
-    # rent = Category(category_name="Rent")
-    print("Category added:", rent)
+    # Create a category
+    chest_category = Category(name="Chest")
 
+    # Create an exercise
+    bench_press = Exercise(name="Bench Press", category=chest_category)
 
+    # Create an entry with set info
+    entry = Entry(
+        time=datetime.now(),
+        name=bench_press.name,
+        set_info=[
+            {"weight": 150, "reps": 6},
+            {"weight": 150, "reps": 6},
+            {"weight": 150, "reps": 5},
+            {"weight": 150, "reps": 5},
+        ],
+    )
 
-    entry_time = datetime.now()
-    entry = add_entry(session, "foo", 123.12, "bar", category_id=rent.id, time = entry_time)
-    entry = add_entry(session, "baz", 456.78, "qux", category_id=rent.id, time = entry_time)
-    entry = add_entry(session, "abc", 901.23, "def", category_id=rent.id, time = entry_time)
-    print("Entry added:", entry)
-    
-    show_entries(session)
+    # Add to session and commit
+    session.add(chest_category)
+    session.add(bench_press)
+    session.add(entry)
+    session.commit()
 
-    print(get_entry_category(session, 1))
-    all_rent_entries = get_all_entries_in_category(session, "Rent")
-    final_sum = 0 
-    for entry in all_rent_entries:
-        final_sum += entry.amount
-
-    print(f"The amount of money you've spent on Rent is {final_sum}")
-    
-    session.close()
 
 if __name__ == "__main__":
     main()
