@@ -44,7 +44,7 @@ class Entry(Base):
     set_info = Column(JSON)
     exercise = relationship("Exercise", back_populates="entries")
 
-    def __init__(self, time, name, exercise_id, set_info) -> None:
+    def __init__(self, time, exercise_id, set_info) -> None:
         self.time = time
         self.exercise_id = exercise_id
         self.set_info = set_info
