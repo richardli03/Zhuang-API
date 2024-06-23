@@ -3,6 +3,7 @@ from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
+
 class Category(Base):
     __tablename__ = "categories"
 
@@ -16,6 +17,7 @@ class Category(Base):
     def __repr__(self) -> str:
         return f"Category: {self.name}, ID: {self.id}"
 
+
 class Exercise(Base):
     __tablename__ = "exercises"
 
@@ -25,26 +27,27 @@ class Exercise(Base):
     category = relationship("Category", back_populates="exercises")
     entries = relationship("Entry", back_populates="exercise")
 
-    def __init__(self, name, category) -> None:
+    def __init__(self, name, category_id) -> None:
         self.name = name
-        self.category = category
+        self.category_id = category_id
 
     def __repr__(self) -> str:
         return f"Exercise: {self.name}, ID: {self.id}"
+
 
 class Entry(Base):
     __tablename__ = "entries"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     time = Column(DateTime, index=True)
-    name = Column(String, ForeignKey("exercises.name"))
+    exercise_id = Column(String, ForeignKey("exercises.id"))
     set_info = Column(JSON)
     exercise = relationship("Exercise", back_populates="entries")
 
-    def __init__(self, time, name, set_info) -> None:
+    def __init__(self, time, name, exercise_id, set_info) -> None:
         self.time = time
-        self.name = name
+        self.exercise_id = exercise_id
         self.set_info = set_info
 
     def __repr__(self) -> str:
-        return f"Entry ID: {self.id}, Exercise: {self.name}, Time: {self.time}"
+        return f"Entry ID: {self.id}, Exercise {self.exercise_id}: {self.exercise.name}, Time: {self.time}"
