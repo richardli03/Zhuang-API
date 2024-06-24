@@ -8,6 +8,7 @@ fastapi = "*"
 sqlalchemy = "*"
 uvicorn = "*"
 requests = "*"
+scapy = "*"
 
 [dev-packages]
 

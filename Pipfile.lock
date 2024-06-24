@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "acc2e8e18d358cdda49ef9b06079fdc324be5eef3d16dd9ea151166cc00f1719"
+            "sha256": "7d66e342d4e5029c8fc46e9c736ae18eb1038bdb66bd45ba6946db568126ec5b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -652,6 +652,14 @@
             ],
             "markers": "python_full_version >= '3.7.0'",
             "version": "==13.7.1"
+        },
+        "scapy": {
+            "hashes": [
+                "sha256:5b260c2b754fd8d409ba83ee7aee294ecdbb2c235f9f78fe90bc11cb6e5debc2"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3' and python_version < '4'",
+            "version": "==2.5.0"
         },
         "shellingham": {
             "hashes": [
