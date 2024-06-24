@@ -33,7 +33,6 @@ def main():
     # Create an entry with set info
     entry = Entry(
         time=datetime.now(),
-        name=bench_press.name,
         set_info=[
             {"weight": 150, "reps": 6},
             {"weight": 150, "reps": 6},
@@ -44,7 +43,6 @@ def main():
     )
     entry1 = Entry(
         time=datetime.now(),
-        name=bench_press.name,
         set_info=[
             {"weight": 140, "reps": 5},
             {"weight": 140, "reps": 7},
@@ -55,7 +53,6 @@ def main():
     )
     entry2 = Entry(
         time=datetime.now(),
-        name=bench_press.name,
         set_info=[
             {"weight": 150, "reps": 8},
             {"weight": 150, "reps": 8},
