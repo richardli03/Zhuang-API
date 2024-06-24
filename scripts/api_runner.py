@@ -2,11 +2,11 @@ import requests
 import json
 from pprint import pprint
 from datetime import datetime
-from libs.schemas import EntryInput
 import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+from libs.schemas import EntryInput
 
 URL = "http://127.0.0.1:8000"
 
