@@ -44,6 +44,16 @@ def create_category(category_name: str):
     return response
 
 
+def create_exercise(exercise_name: str, exercise_category: int):
+    entry = {"name": exercise_name, "category_id": exercise_category}
+    response = requests.post(
+        f"{URL}/exercises/",
+        json=entry,
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response
+
+
 def create_entry(entry_name, set_info: list[dict]):
     entry = {"name": entry_name, "set_info": set_info}
     response = requests.post(
@@ -63,9 +73,8 @@ set_info = [
 entry_name = "Bench Press"
 
 create_entry(entry_name, set_info)
-
-
+create_exercise("another test", 2)
 # create_a_category("Test3")
 
 
-pprint(get_entries())
+pprint(get_exercises())
