@@ -7,8 +7,20 @@ from typing import Union, List
 from datetime import datetime
 from libs.databases import Category, Exercise, Entry
 from libs.schemas import *
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000"
+    ],  # Adjust if your React app is on a different port
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_db():
@@ -20,8 +32,8 @@ def get_db():
 
 
 @app.get("/")
-def read_root():
-    return "workout tracker"
+def ping():
+    return "ping"
 
 
 @app.post("/categories/", response_model=CategoryOutput)
