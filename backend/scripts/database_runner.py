@@ -9,7 +9,7 @@ from pathlib import Path
 # Add the parent directory to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from libs.databases import Base, Category, Exercise, Entry
+from libs.databases import Category, Exercise, Entry, Workout
 from libs.db_utils import *
 
 
@@ -40,6 +40,7 @@ def main():
             {"weight": 150, "reps": 5},
         ],
         exercise_id=1,
+        workout_id=1,
     )
     entry1 = Entry(
         time=datetime.now(),
@@ -50,6 +51,7 @@ def main():
             {"weight": 140, "reps": 7},
         ],
         exercise_id=1,
+        workout_id=1,
     )
     entry2 = Entry(
         time=datetime.now(),
@@ -60,8 +62,11 @@ def main():
             {"weight": 150, "reps": 5},
         ],
         exercise_id=2,
+        workout_id=1,
     )
-
+    workout = Workout(
+        name="Chest Day", time=datetime.now(), entries=[entry, entry1, entry2]
+    )
     # Add to session and commit
 
     session.add(bench_press)
@@ -70,7 +75,11 @@ def main():
     session.add(entry)
     session.add(entry1)
     session.add(entry2)
+    session.add(workout)
     session.commit()
+
+    results = session.query(Workout).first()
+    print(results)
 
 
 if __name__ == "__main__":

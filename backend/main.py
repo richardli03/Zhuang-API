@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Depends, HTTPException, Body
+from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
 import uvicorn
 from libs.db_utils import create_session
-from typing import Union, List
+from typing import List
 from datetime import datetime
-from libs.databases import Category, Exercise, Entry
+from libs.databases import Category, Exercise, Entry, Workout
 from libs.schemas import *
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -157,6 +157,7 @@ def create_entry(entry: EntryInput, db: Session = Depends(get_db)):
         time=datetime.now(),
         exercise_id=exercise_id,
         set_info=entry.set_info,
+        workout_id=entry.workout_id,
     )
     db.add(new_entry)
     db.commit()
@@ -190,6 +191,12 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
         db.delete(entry_to_delete)
         db.commit()
     return f"entry {entry_to_delete} deleted"
+
+
+@app.get("/workouts/", response_model=List[WorkoutOutput], tags=["workouts"])
+def read_workouts(db: Session = Depends(get_db)):
+    workouts = db.query(Workout).all()
+    return workouts
 
 
 if __name__ == "__main__":

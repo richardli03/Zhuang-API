@@ -26,6 +26,7 @@ class ExerciseOutput(BaseModel):
 class EntryInput(BaseModel):
     name: str
     set_info: List[dict]
+    workout_id: int
 
 
 class EntryOutput(BaseModel):
@@ -33,3 +34,11 @@ class EntryOutput(BaseModel):
     time: datetime
     set_info: List[dict]
     exercise_id: int
+    workout_id: int
+
+
+class WorkoutOutput(BaseModel):
+    id: int
+    name: str
+    time: datetime
+    entries: List[EntryOutput]
