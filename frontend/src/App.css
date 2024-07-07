@@ -37,10 +37,12 @@
   }
 }
 
-.ping-check-button {
+
+.test-btn {
   background-color: #1c681f;
   color: white;
-  padding: 15px 32px;
+  padding: 20px 30px; 
+  margin: 5px 10px;
   text-align: center;
   font-size: 16px;
 }
