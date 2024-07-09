@@ -99,7 +99,7 @@ function App() {
   const [categories, setCategories] = useState([]);
 
   const fetchCategory = async () => {
-    const cat_response = await axios.get("http://127.0.0.1:8000/categories/");
+    const cat_response = await axios.get("http://127.0.0.1:8000/workouts/");
     console.log(cat_response.data);
     setCategories(cat_response.data);
   };
