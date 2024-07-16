@@ -34,8 +34,9 @@ app = FastAPI(openapi_tags=tags_metadata)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",  # react app deployed locally
-        "https://richardli03.github.io",  # react app hosted on github pages
+        # "http://localhost:3000",  # react app deployed locally
+        # "https://richardli03.github.io",
+        "*",  # react app hosted on github pages
     ],
     allow_credentials=True,
     allow_methods=["*"],
