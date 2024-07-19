@@ -40,6 +40,8 @@ body {
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #7f9bf5;
+  width: 150px; /* Fixed width */
+  height: 40px; /* Fixed height */
 }
 
 /* TODO: come up with a color scheme probably */
@@ -91,3 +93,4 @@ body {
   justify-content: center;
   margin-top: 20px;
 }
+

@@ -156,7 +156,7 @@ function App() {
           )}
 
           <button className="fetch-api-btn" onClick={fetchExercises}>
-            fetch workouts
+            fetch exercises
           </button>
           {exercises.length > 0 && (
             <div>
