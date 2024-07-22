@@ -203,5 +203,20 @@ def read_workouts(db: Session = Depends(get_db)):
     return workouts
 
 
+@app.post("/workouts/", response_model=WorkoutOutput, tags=["workouts"])
+def create_workout(workout: WorkoutInput, db: Session = Depends(get_db)):
+    new_workout = Workout(name=workout.name, time=datetime.now(), entries=[])
+    db.add(new_workout)
+    db.commit()
+    db.refresh(new_workout)
+    return new_workout
+
+
+@app.get("/workouts/newest", response_model=int, tags=["workouts"])
+def get_most_recent_workout_id(db: Session = Depends(get_db)):
+    workout_id = db.query(Workout).order_by(Workout.time.desc()).first().id
+    return workout_id
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)

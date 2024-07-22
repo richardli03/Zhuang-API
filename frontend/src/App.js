@@ -55,8 +55,6 @@ function SetInput() {
       // clearrrrrrr
       setName("");
       setSets([{ weight: "", reps: "" }]);
-      // leaving workout id
-      // setWorkoutID(null);
     } catch (error) {
       console.error("Error logging exercises:", error);
     }
@@ -112,22 +110,26 @@ function SetInput() {
 }
 
 function App() {
-  const [workouts, setWorkouts] = useState([]);
-  const [exercises, setExercises] = useState([]);
+  const [alive, setStatus] = useState(null); // ping
+  const [newWorkout, createNewWorkout] = useState('Unnamed Workout');// create new workout
+  const [newWorkoutID, setNewWorkoutID] = useState(null);
 
-  const fetchWorkout = async () => {
-    const resp = await axios.get("http://127.0.0.1:8000/workouts/");
-    console.log(resp.data);
-    setWorkouts(resp.data);
+  const createWorkout = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/workouts/', {
+        name: newWorkout
+      });
+      console.log('New workout created:', response.data);
+      createNewWorkout(''); // Clear the input field
+    } catch (error) {
+      console.error('Error creating workout:', error);
+      alert('Failed to create workout. Please try again.');
+    }
+    const workout_id_resp = await axios.get('http://127.0.0.1:8000/workouts/newest');
+    setNewWorkoutID(workout_id_resp.data);
+    // alert("Workout created with ID: " + workout_id_resp.data);
   };
 
-  const fetchExercises = async () => {
-    const resp = await axios.get("http://127.0.0.1:8000/exercises/");
-    console.log(resp.data);
-    setExercises(resp.data);
-  };
-
-  const [alive, setStatus] = useState(null);
   // define a state to store the categories with an empty array
   const pingServer = async () => {
     const resp = await axios.get("http://127.0.0.1:8000");
@@ -138,38 +140,23 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className="title">ZHUANG</div>
-        <div className="top-btns">
-          <button className="fetch-api-btn" onClick={fetchWorkout}>
-            fetch workouts
-          </button>
-          {workouts.length > 0 && (
-            <div>
-              <ul className="api-response-info">
-                {workouts.map((category) => (
-                  <li key={category.id}>
-                    {" "}
-                    {category.id} {category.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+        <div className="top-section">
+          <div className="create-workout">
+              <input
+                type="text"
+                value={newWorkout}
+                onChange={(e) => createNewWorkout(e.target.value)}
+                placeholder="new workout"
+                className="workout-input"
+              />
+              <button className="fetch-api-btn" onClick={createWorkout}>
+                Create Workout
+              </button>
+              {newWorkoutID && (
+                <div> Created ID: {newWorkoutID} </div>
+              )}
 
-          <button className="fetch-api-btn" onClick={fetchExercises}>
-            fetch exercises
-          </button>
-          {exercises.length > 0 && (
-            <div>
-              <ul className="api-response-info">
-                {exercises.map((category) => (
-                  <li key={category.id}>
-                    {" "}
-                    {category.id} {category.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          </div>
         </div>
 
         <SetInput />

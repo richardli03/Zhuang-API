@@ -42,3 +42,7 @@ class WorkoutOutput(BaseModel):
     name: str
     time: datetime
     entries: List[EntryOutput]
+
+
+class WorkoutInput(BaseModel):
+    name: str
