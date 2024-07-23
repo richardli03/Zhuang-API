@@ -45,7 +45,7 @@ app.add_middleware(
 
 
 def get_db():
-    session = create_session("richard_workouts")
+    session = create_session("new_richard_workouts")
     try:
         yield session
     finally:
@@ -212,10 +212,19 @@ def create_workout(workout: WorkoutInput, db: Session = Depends(get_db)):
     return new_workout
 
 
-@app.get("/workouts/newest", response_model=int, tags=["workouts"])
+@app.get("/workouts/newest", tags=["workouts"])
 def get_most_recent_workout_id(db: Session = Depends(get_db)):
     workout_id = db.query(Workout).order_by(Workout.time.desc()).first().id
     return workout_id
+
+
+@app.delete("/workouts/{workout_id}", response_model=int, tags=["workouts"])
+def delete_workout(workout_id: int, db: Session = Depends(get_db)):
+    workout_to_delete = db.query(Workout).filter_by(id=workout_id).first()
+    if workout_to_delete:
+        db.delete(workout_to_delete)
+        db.commit()
+    return f"workout {workout_to_delete}"
 
 
 if __name__ == "__main__":
