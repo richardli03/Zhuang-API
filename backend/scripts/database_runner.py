@@ -55,11 +55,11 @@ def main():
         exercises = json.load(f)
 
     add_exercises(session, exercises["chest"], chest.id)
-    add_exercises(session, exercises["arms"], chest.id)
-    add_exercises(session, exercises["legs"], chest.id)
-    add_exercises(session, exercises["shoulders"], chest.id)
-    add_exercises(session, exercises["back"], chest.id)
-    add_exercises(session, exercises["abs"], chest.id)
+    add_exercises(session, exercises["arms"], arms.id)
+    add_exercises(session, exercises["legs"], legs.id)
+    add_exercises(session, exercises["shoulders"], shoulders.id)
+    add_exercises(session, exercises["back"], back.id)
+    add_exercises(session, exercises["abs"], abs.id)
 
     # Create an entry with set info
     entry = Entry(
