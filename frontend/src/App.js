@@ -7,6 +7,7 @@ function App() {
   const [alive, setStatus] = useState(null); // ping
   const [newWorkout, createNewWorkout] = useState('Unnamed Workout');// create new workout
   const [newWorkoutID, setNewWorkoutID] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   const createWorkout = async () => {
     try {
@@ -28,6 +29,12 @@ function App() {
   const pingServer = async () => {
     const resp = await axios.get("http://127.0.0.1:8000");
     setStatus(resp.data);
+  };
+
+  const fetchCategories = async () => {
+    const resp = await axios.get("http://127.0.0.1:8000/categories/");
+    console.log(resp.data);
+    setCategories(resp.data);
   };
 
   return (
@@ -53,13 +60,29 @@ function App() {
           </div>
         </div>
 
-        <SetInput />
-        <button className="fetch-api-btn" onClick={pingServer}>
-          ping server
-        </button>
-        {alive && (
-          <div className="api-response-info">response from API: {alive}</div>
+        <SetInput workoutID={newWorkoutID} />
+        <div>
+          <button className="fetch-api-btn" onClick={pingServer}>
+            ping server
+          </button>
+          {alive && (
+            <div className="api-response-info">response from API: {alive}</div>
+          )}
+
+          <button className="fetch-api-btn" onClick={fetchCategories}>
+            fetch categories
+          </button>
+          {categories.length > 0 && (
+          <div className="categories-list">
+            <h3>Categories:</h3>
+            <ul className="api-response-info">
+              {categories.map((category, index) => (
+                <li key={index}> {index} || {category.name}</li>
+              ))}
+            </ul>
+          </div>
         )}
+        </div>
       </header>
     </div>
   );
