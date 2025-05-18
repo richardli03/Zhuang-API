@@ -9,6 +9,10 @@ sqlalchemy = "*"
 uvicorn = "*"
 requests = "*"
 scapy = "*"
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [dev-packages]
 

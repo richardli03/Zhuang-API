@@ -1,4 +1,5 @@
 *.db
+*.csv
 .DS_Store
 # my personal list of exercises
 exercises.json 
